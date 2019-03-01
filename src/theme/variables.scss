@@ -2,7 +2,24 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+$color1: #394768;
+$color2: #5095B9;
+$color3: #B1C2D3;
+$color3-light: #D1E3F4;
+$color4: #DBB4B2;
+$color5: #A08DA1;
+
 :root {
+  --ion-border-color: #DBB4B2;
+  --ion-border-color-rgb: #DBB4B2;
+  --ion-background-color: #394768;
+  --ion-background-color-rgb: 57, 71, 104;
+  --ion-title-color: #5095B9;
+  --ion-title-color-rgb: 80, 149, 185;
+
+  /* These examples use the same color: sienna. */
+  --ion-text-color: #D1E3F4;
+  --ion-text-color-rgb: 209, 227, 244;
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -74,4 +91,18 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+}
+
+
+div {
+  --bg: #A08DA1 !important;
+  --bg-rgb: 160, 141, 161 !important;
+  color: var(--ion-background-color);
+  background: var(--bg);
+  border-radius: 6px;
+  border: 1px solid var(--ion-border-color);
+}
+
+ion-title, h1, h2, h3, h4, h5, h6 {
+  color: var(--ion-title-color);
 }
