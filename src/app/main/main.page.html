@@ -1,0 +1,11 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title slot="start">Magic Mirror</ion-title>
+        <ion-input slot="start" placeholder="enter Mirror code to add mirror" id="mirroCodeInput" type="text" [(ngModel)]="mirrorCode"
+                   (change)="mirrorCodeCheck()"></ion-input>
+        <ion-button  shape="round" color="dark" slot="start" (click)="addMirror()" disabled="{{codeIsValid}}">+</ion-button>
+    </ion-toolbar>
+</ion-header>
+<ion-content padding>
+    <ion-list id="mirror-list"></ion-list>
+</ion-content>

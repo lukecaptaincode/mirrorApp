@@ -10,15 +10,29 @@
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
 
-//$color1: #6387A7;
-//$color2: #A19DB3;
-//$color3: #AFC2D3;
-//$color4: #5A506D;
-////$color5: #D5B3B3;
-//
-//$color1: #394768;
-//$color2: #5095B9;
-//$color3: #B1C2D3;
-//$color4: #DBB4B2;
-//$color5: #A08DA1;
+.card-arrow{
+  position: absolute;
+  top:0;
+  right: 0;
+  height: 100%;
+  width: 50px;
+  background-color: var( --ion-color-secondary-shade);
+  color: white;
+  ion-icon{
+    margin-top: 50%;
+    font-size: 2rem;
+  }
+}
+ion-card {
 
+  ion-card-title{
+    color: var(--ion-title-color);
+  }
+  ion-card-subtitle{
+    color: var(--ion-color-secondary-contrast);
+  }
+  background: var(--ion-color-secondary) !important;
+  --bg: #34495e!important;
+  --bg-rgb: 52,73,94!important;
+
+}

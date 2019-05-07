@@ -26,5 +26,28 @@ export class Utilities {
         });
         toast.present();
     }
+
+    /**
+     * Takes in params and returns the html for an ion cards
+     * @param title
+     * @param subtitle
+     * @param handler
+     * @param content
+     */
+    static dynamicCardFactory(title: string = null, subtitle: string = null, content: string = null) {
+        // Ternary operators to create card elements when not null
+        const contentElement = (content) ? '<ion-card-content>' + content + '</ion-card-content>' : '';
+        const titleElement = (title) ? '<ion-card-title>' + title + '</ion-card-title>' : '';
+        const subtitleElement = (subtitle) ? '<ion-card-subtitle>' + subtitle + '</ion-card-subtitle>' : '';
+        // Return built card
+        return '<ion-card id="' + subtitle + '" >' +
+            ' <div class="card-arrow ion-text-center"><ion-icon name="arrow-dropright-circle"></ion-icon></div>' +
+            '<ion-card-header>' +
+            subtitleElement +
+            titleElement +
+            '</ion-card-header>' +
+            contentElement +
+            '</ion-card>';
+    }
 }
 

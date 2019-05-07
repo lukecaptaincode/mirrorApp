@@ -2,39 +2,39 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
-$color1: #394768;
-$color2: #5095B9;
-$color3: #B1C2D3;
-$color3-light: #D1E3F4;
-$color4: #DBB4B2;
-$color5: #A08DA1;
+
+/* RGB */
+$color1: rgba(48, 52, 63, 1);
+$color2: rgba(250, 250, 255, 1);
+$color3: rgba(228, 217, 255, 1);
+$color4: rgba(39, 52, 105, 1);
+$color5: rgba(30, 39, 73, 1);
 
 :root {
-  --ion-border-color: #DBB4B2;
-  --ion-border-color-rgb: #DBB4B2;
-  --ion-background-color: #394768;
-  --ion-background-color-rgb: 57, 71, 104;
-  --ion-title-color: #5095B9;
-  --ion-title-color-rgb: 80, 149, 185;
+  --ion-border-color: #273469;
+  --ion-border-color-rgb: 30, 39, 73;
+  --ion-background-color: #30343F;
+  --ion-background-color-rgb: 48, 52, 63;
+  --ion-title-color: #E4D9FF;
+  --ion-title-color-rgb: 228, 217, 255;
 
   /* These examples use the same color: sienna. */
-  --ion-text-color: #D1E3F4;
-  --ion-text-color-rgb: 209, 227, 244;
-  /** primary **/
-  --ion-color-primary: #3880ff;
-  --ion-color-primary-rgb: 56, 128, 255;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #4c8dff;
+  --ion-text-color: #FAFAFF;
+  --ion-text-color-rgb: 250, 250, 255;
 
-  /** secondary **/
-  --ion-color-secondary: #0cd1e8;
-  --ion-color-secondary-rgb: 12, 209, 232;
+  --ion-color-primary: #9b59b6;
+  --ion-color-primary-rgb: 155,89,182;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255,255,255;
+  --ion-color-primary-shade: #884ea0;
+  --ion-color-primary-tint: #a56abd;
+
+  --ion-color-secondary: #34495e;
+  --ion-color-secondary-rgb: 52,73,94;
   --ion-color-secondary-contrast: #ffffff;
-  --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #0bb8cc;
-  --ion-color-secondary-tint: #24d6ea;
+  --ion-color-secondary-contrast-rgb: 255,255,255;
+  --ion-color-secondary-shade: #2e4053;
+  --ion-color-secondary-tint: #485b6e;
 
   /** tertiary **/
   --ion-color-tertiary: #7044ff;
@@ -91,18 +91,4 @@ $color5: #A08DA1;
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
-}
-
-
-div {
-  --bg: #A08DA1 !important;
-  --bg-rgb: 160, 141, 161 !important;
-  color: var(--ion-background-color);
-  background: var(--bg);
-  border-radius: 6px;
-  border: 1px solid var(--ion-border-color);
-}
-
-ion-title, h1, h2, h3, h4, h5, h6 {
-  color: var(--ion-title-color);
 }

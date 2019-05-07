@@ -20,8 +20,7 @@ export class User {
      * @param isRegistration
      * @return object - returns validation object
      */
-    public static validateUserInput(email: string, password: string, repeatEmail: string = '',
-                                    repeatPassword: string = '', isRegistration: boolean = false): object {
+    public static validateUserInput(email: string, password: string, repeatEmail: string = '', repeatPassword: string = '', isRegistration: boolean = false): object {
         // Validation Regex
         const emailRegexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
         const minimumPasswordRegexp = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/); // Min 8, 1 letter, 1 Num
@@ -52,25 +51,72 @@ export class User {
      * @param repeatPassword
      */
     public createUser(email: string, password: string, repeatEmail: string, repeatPassword: string) {
-        const userValidationResponse = User.validateUserInput(email, repeatEmail, password, repeatPassword, true);
-        if (!userValidationResponse['error']) { // If the error object is false, attempt to creat the user
-            auth().createUserWithEmailAndPassword(email, password).catch((error: any) => {
-                if (error) { // Firebase error and error handling
-                    // Handle Errors here.
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    if (errorCode === 'auth/weak-password') {
-                        return {'error': true, 'message': 'Password is too weak'};
-                    } else {
-                        return {'error': true, 'message': errorMessage};
-                    }
-                } else { // Success
-                    alert('MAJOR ZEST');
+        return new Promise((response: any) => {
+                const userValidationResponse = User.validateUserInput(email, password, repeatEmail, repeatPassword, true);
+                if (!userValidationResponse['error']) { // If the error object is false, attempt to creat the user
+                    auth().createUserWithEmailAndPassword(email, password).catch((error: any) => {
+                        if (error) { // Firebase error and error handling
+                            // Handle Errors here.
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            if (errorCode === 'auth/weak-password') {
+                                response({'error': true, 'message': 'Password is too weak'});
+                            } else {
+                                response({'error': true, 'message': errorMessage});
+                            }
+
+                        } else { // Success
+                            response({'error': false, 'message': ''});
+                        }
+                    });
+                } else { // Else return the error object to the front end with message
+                    response(userValidationResponse);
                 }
-            });
-        } else { // Else return the error object to the front end with message
-            return userValidationResponse;
-        }
+            }
+        )
+            ;
     }
+
+    /**
+     * Take the email and password and logs a request with firebase to see if the user exists returns the request as a promise
+     * @param email
+     * @param password
+     * @return Promise - the request as promise
+     */
+    public login(email: string, password: string) {
+        return new Promise((response: any) => {
+            const userValidationResponse = User.validateUserInput(email, password);
+            if (!userValidationResponse['error']) {
+                auth().signInWithEmailAndPassword(email, password).then((firebaseUser) => {
+                    response({'error': false, 'message': 'log in success', 'uId': firebaseUser['user']['uid']}); // If the user exists return true with the uID
+                }).catch((error: any) => {
+                    if (error) { // Firebase error and error handling
+                        const errorMessage = error.message;
+                        response({'error': true, 'message': errorMessage});
+                    }
+                });
+            } else { // Else return the error object to the front end with message
+                response(userValidationResponse);
+            }
+        });
+    }
+
+    /**
+     * Calls the sendPasswordResetEmail (function from firebase) and returns it
+     * as a promise to later resolve. This promise will always resolve to true
+     * to obfuscate information form bad actors
+     * @param email - email to reset
+     * @return Promise - the promise that will always resolve true
+     */
+    public resetPassword(email: string) {
+        return new Promise((response: any) => { // Return the request as a Promise
+            auth().sendPasswordResetEmail(email).then((resp: any) => { // Start the request
+                response({'isReset': true}); // On any response, return true
+            }).catch((resp: any) => {
+                response({'isReset': true}); // On error, return true
+            });
+        });
+    }
+
 
 }
