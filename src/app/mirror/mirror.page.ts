@@ -6,6 +6,9 @@ import {AlertController, ToastController} from '@ionic/angular';
 import {User} from '../user/User';
 import {Storage} from '@ionic/storage';
 
+/**
+ * @class Note - used for creating bnote object
+ */
 class Note {
     title: string;
     content: string;
@@ -19,7 +22,11 @@ class Note {
     templateUrl: './mirror.page.html',
     styleUrls: ['./mirror.page.scss'],
 })
+/**
+ * @class the mirrorpage, for adding and deleting notes
+ */
 export class MirrorPage implements OnInit {
+    //Init vars
     userId: string;
     mirrorId: string;
     screenName: string;
@@ -33,6 +40,7 @@ export class MirrorPage implements OnInit {
 
     constructor(private router: Router, private route: ActivatedRoute,
                 private storage: Storage, private alertController: AlertController) {
+        // Get ths user id form the the session
         this.user = new User(storage, router);
         this.user.sessionCheck().then((response: any) => {
             this.userId = response;
@@ -42,7 +50,7 @@ export class MirrorPage implements OnInit {
             try {
                 this.mirrorId = this.router.getCurrentNavigation().extras.state.mirrorId;
                 this.screenName = this.router.getCurrentNavigation().extras.state.screenName;
-                this.getNotes();
+                this.getNotes(); // get the notes
             } catch (e) {
                 const navigationExtras: NavigationExtras = {};
                 this.router.navigate(['main'], navigationExtras); // Angular router with param
@@ -50,16 +58,21 @@ export class MirrorPage implements OnInit {
         });
     }
 
-
+    /**
+     * gets the notes from firebase and loads them into the notes array
+     */
     getNotes() {
         this.firebaseService.getData(this.mirrorId + '/notes/').then((response: object) => {
             const tempNoteArray = [];
             Object.keys(response).forEach((key) => {
-                const tempNote = new Note();
+                const tempNote = new Note(); // create a temp note object
+
+                // Load data into object
                 tempNote.author = response[key]['data']['author'];
                 tempNote.title = response[key]['data']['title'];
                 tempNote.content = response[key]['data']['content'];
                 tempNote.id = response[key]['data']['id'];
+                // Push into note array
                 tempNoteArray.push(tempNote);
             });
             this.notes = tempNoteArray;
@@ -67,15 +80,21 @@ export class MirrorPage implements OnInit {
         });
     }
 
+    /**
+     * adds the note firebase
+     */
     addNote() {
         this.utils.loadingSpinner(true);
-        const noteID = this.utils.randomStringId();
-        const note = new Note();
+        const noteID = this.utils.randomStringId(); // generate random string id
+        const note = new Note(); // create note object
+        // Populate object
         note.author = this.userId;
         note.title = this.noteTitle;
         note.content = this.noteText;
         note.screenName = this.screenName;
         note.id = noteID;
+        this.notes.push(note); // add to notes arr
+        // Push to firebase
         this.firebaseService.pushData(this.mirrorId + '/notes/' + noteID, note)
             .then((response: boolean) => {
                 this.utils.toggleModal();
@@ -88,6 +107,10 @@ export class MirrorPage implements OnInit {
             });
     }
 
+    /**
+     * Calls an alert to delete a not using the noteID
+     * @param noteId
+     */
     async deleteNote(noteId: string) {
         const alert = await this.alertController.create({
             header: 'Are you sure you want to delete this note?',
@@ -100,13 +123,14 @@ export class MirrorPage implements OnInit {
                     text: 'Yes',
                     cssClass: 'Primary',
                     handler: () => {
+                        // Call delete on firebase
                         this.firebaseService.deleteData(this.mirrorId + '/notes', noteId);
                     }
                 }
             ]
         });
 
-        await alert.present();
+        await alert.present(); // show alert
     }
 
     ngOnInit() {

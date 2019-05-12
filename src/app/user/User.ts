@@ -144,23 +144,33 @@ export class User {
 
     }
 
+    /**
+     * Returns a promise that checks the session to see if the user is logged in using
+     * the stored uID.
+     */
     public sessionCheck() {
         return new Promise((response: any) => {
             this.storage.get('uId').then((val) => {
+                // If the user id is null, undefined or empty, log them out
                 if (val == null || val === undefined || val.trim() === '') {
                     this.callLogout();
                 } else {
+                    // Else return the uid
                     console.log('uId is:' + val);
                     response(val);
 
                 }
             }).catch(() => {
+                // If error logout
                 this.callLogout();
             });
         });
 
     }
 
+    /**
+     * calls the logout logic then navigates to login page
+     */
     public callLogout() {
         const navigationExtras: NavigationExtras = {};
         this.logout().then((response: boolean) => {

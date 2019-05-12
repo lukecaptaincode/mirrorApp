@@ -12,7 +12,9 @@ import {animate} from 'just-animate/lib/main';
     ]
 })
 export class Utilities {
-
+    /**
+     * Generates a random int to a string using base 36
+     */
     static randomStringId() {
         // Random no to string
         return Math.random().toString(36).substring(5);
