@@ -6,7 +6,7 @@
             <h1>MagicMirror</h1></ion-col>
         </ion-row>
         <ion-row>
-            <ion-col size="6" offset="3">
+            <ion-col size="8" offset="1">
                 <div>
                     <!--
                     The main form section;
@@ -38,19 +38,13 @@
                     All label clicks call the setFormSubmissionAction() function while passing their
                     desired function.
             -->
-            <ion-col size="2" [offset]="2">
+            <ion-col size="12">
                 <ion-label align-self-center (click)="setFormSubmissionAction('login')">Login</ion-label>
             </ion-col>
-            <ion-col align-self-center size="1">
-                |
-            </ion-col>
-            <ion-col size="2">
+            <ion-col size="12">
                 <ion-label align-self-center (click)="setFormSubmissionAction('signup')">Sign Up</ion-label>
             </ion-col>
-            <ion-col align-self-center size="1">
-                |
-            </ion-col>
-            <ion-col size="2">
+            <ion-col size="12">
                 <ion-label align-self-center (click)="setFormSubmissionAction('reset password')">Forgot Password</ion-label>
             </ion-col>
         </ion-row>

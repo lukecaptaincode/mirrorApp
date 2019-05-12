@@ -3,36 +3,156 @@
 @import '~@ionic/angular/css/normalize.css';
 @import '~@ionic/angular/css/structure.css';
 @import '~@ionic/angular/css/typography.css';
-
 @import '~@ionic/angular/css/padding.css';
 @import '~@ionic/angular/css/float-elements.css';
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+ion-input{
+  border: 1px solid transparent!important;
+  border-bottom-color: rgba(#884ea0,0.6)!important;
+  transition: all 1s ease-in-out;
+  margin-bottom: 5%;
 
-.card-arrow{
+}
+ion-input:focus{
+  border-bottom-color: rgba(#884ea0,1)!important;
+}
+ion-input:active{
+  border-bottom-color: rgba(#884ea0,1)!important;
+}
+ion-textarea{
+  height: 100px;
+  border: 1px solid rgba(#884ea0,0.6)!important;
+  background-color: rgba(#884ea0,0.2)!important;
+  border-radius: 6px;
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+.card-arrow {
   position: absolute;
-  top:0;
+  top: 0;
   right: 0;
   height: 100%;
   width: 50px;
-  background-color: var( --ion-color-secondary-shade);
+  background-color: var(--ion-color-secondary-shade);
   color: white;
-  ion-icon{
+  ion-icon {
     margin-top: 50%;
     font-size: 2rem;
   }
 }
+
+.card-delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 50px;
+  background-color: var(--ion-color-secondary-shade);
+  color: var(--ion-color-danger-tint);
+  ion-icon {
+    margin-top: 50%;
+    font-size: 2rem;
+  }
+}
+
 ion-card {
 
-  ion-card-title{
+  ion-card-title {
     color: var(--ion-title-color);
   }
-  ion-card-subtitle{
+  ion-card-subtitle {
     color: var(--ion-color-secondary-contrast);
   }
   background: var(--ion-color-secondary) !important;
-  --bg: #34495e!important;
-  --bg-rgb: 52,73,94!important;
+  --bg: #34495e !important;
+  --bg-rgb: 52, 73, 94 !important;
 
+}
+ion-item{
+  ion-card{
+    width: 100%;
+  }
+}
+#square-loader {
+  display: none;
+  position: relative;
+  width: 2em;
+  height: 2em;
+  z-index: 20000;
+  top: 50%;
+  border: 3px solid rgba(228, 217, 255, 0.75);
+  margin: 0 auto;
+  overflow: hidden;
+  animation: spin 3s ease infinite;
+}
+
+#square-loader::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 2em;
+  height: 2em;
+  background-color: rgba(228, 217, 255, 0.75);
+  transform-origin: center bottom;
+  transform: scaleY(1);
+  animation: fill 3s linear infinite;
+}
+
+@keyframes spin {
+  50%,
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fill {
+  25%,
+  50% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.purple-dropshadow {
+  -webkit-box-shadow: 0px 0px 33px 0px rgba(136, 78, 160, 1) !important;
+  -moz-box-shadow: 0px 0px 33px 0px rgba(136, 78, 160, 1) !important;
+  box-shadow: 0px 0px 33px 0px rgba(136, 78, 160, 1) !important;
+}
+
+#customModal {
+  opacity: 0;
+  @extend .purple-dropshadow;
+  position: absolute;
+  margin: 0 auto;
+  top: 5%;
+  border-radius: 6px;
+  padding: 5%;
+  height: max-content;
+  width: 90%;
+  z-index: 10001;
+  background-color: var(--ion-color-secondary-tint);
+  transition: all 1s ease-in-out;
+  pointer-events: none;
+}
+.alert-wrapper{
+  @extend .purple-dropshadow;
+  background-color: var(--ion-color-secondary-tint) !important;
+}
+ion-icon[name="log-out"]{
+  margin-left: 2%;
+  font-size: 2rem;
+}
+#modalBackDrop{
+  opacity: 0;
+  z-index: 1000;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0,0,0,0.6);
+  pointer-events: none;
 }

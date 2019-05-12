@@ -3,6 +3,7 @@ import {User} from './../user/User';
 import {ToastController} from '@ionic/angular';
 import {Utilities} from '../utils/Utilities';
 import {NavigationExtras, Router} from '@angular/router';
+import {Storage} from '@ionic/storage';
 
 @Component({
     selector: 'app-home',
@@ -11,7 +12,7 @@ import {NavigationExtras, Router} from '@angular/router';
 })
 export class HomePage {
     toastr = new ToastController();
-    user = new User();
+    user: any;
     utils = Utilities;
     // Inputs
     emailInputValue: string;
@@ -23,25 +24,40 @@ export class HomePage {
     /**
      * Constructor with router as param
      * @param router
+     * @param storage
      */
-    constructor(private router: Router) {
-        // Empty, nothing to build
+    constructor(private router: Router, private storage: Storage) {
+        this.user = new User(storage, router);
+        // If user has session, login
+        this.storage.get('uId').then((val) => {
+            if (val == null || val === undefined || val.trim() === '') {
+                this.utils.displayToast('Error loading session', 1000, this.toastr, 'danger');
+            } else {
+                const navigationExtras: NavigationExtras = {};
+                this.router.navigate(['main'], navigationExtras); // Angular router with param
+            }
+
+        });
     }
 
     /**
      * Takes in the user class response object and either displays a toast
-     * to inform the user of errors or navigates to the main page and passese the user id
+     * to inform the user of errors or navigates to the main page and passes the user id
      * @param response the response object from the user class
      */
     private loginHandler(response: object) {
         if (response['error']) { // If error , show toast
             this.utils.displayToast(response['message'], 1000, this.toastr, 'danger');
+            this.utils.loadingSpinner(false);
         } else {
+            // Add uid to localstorage
+            this.storage.set('uId', response['uId']);
             // Add the userid to the navigation extras and pass the state
             const navigationExtras: NavigationExtras = {
-                state: {
-                    uId: response['uId']
-                }
+                // Old way of managing uId, no longer needed
+                // state: {
+                //     uId: response['uId']
+                // }
             };
             this.router.navigate(['main'], navigationExtras); // Angular router with param
         }
@@ -57,7 +73,7 @@ export class HomePage {
      * @param formSubmitAction  -is either; login , signup or reset password
      */
     public formSubmit(formSubmitAction: string) {
-
+        this.utils.loadingSpinner(true);
         if (formSubmitAction === 'login') { // Create promise for logging in, passing email and password.
             this.user.login(this.emailInputValue, this.passwordInputValue).then((resp: any) => {
                 this.loginHandler(resp); // Call login handler

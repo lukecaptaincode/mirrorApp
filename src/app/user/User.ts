@@ -1,6 +1,9 @@
 import {auth} from 'firebase';
 import {NgModule} from '@angular/core';
-
+import {NavigationExtras, Router} from '@angular/router';
+import {Storage} from '@ionic/storage';
+import {Utilities} from '../utils/Utilities';
+import {ToastController} from '@ionic/angular';
 
 @NgModule({
     declarations: [
@@ -11,6 +14,12 @@ import {NgModule} from '@angular/core';
     ]
 })
 export class User {
+    utils = Utilities;
+    toastr = new ToastController();
+
+    constructor(private storage: Storage, private router: Router) {
+    }
+
     /**
      * validates the user inputs before login or registration
      * @param email
@@ -118,5 +127,49 @@ export class User {
         });
     }
 
+    /**
+     * Returns a promise that logs the user out when resolved or throws an error
+     * @return Promise - the logout promise
+     */
+    public logout() {
+        return new Promise((response: any) => {
+            this.storage.set('uId', null).then(() => {
+                auth().signOut().then(function () {
+                    response(true);
+                }, function (error) {
+                    response(false);
+                });
+            });
+        });
 
+    }
+
+    public sessionCheck() {
+        return new Promise((response: any) => {
+            this.storage.get('uId').then((val) => {
+                if (val == null || val === undefined || val.trim() === '') {
+                    this.callLogout();
+                } else {
+                    console.log('uId is:' + val);
+                    response(val);
+
+                }
+            }).catch(() => {
+                this.callLogout();
+            });
+        });
+
+    }
+
+    public callLogout() {
+        const navigationExtras: NavigationExtras = {};
+        this.logout().then((response: boolean) => {
+            if (response) {
+                this.utils.displayToast('Logged out', 1000, this.toastr, 'success');
+            } else {
+                this.utils.displayToast('Error logging out', 1000, this.toastr, 'warning');
+            }
+            this.router.navigate(['/'], navigationExtras);
+        });
+    }
 }

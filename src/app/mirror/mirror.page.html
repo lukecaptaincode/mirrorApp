@@ -1,9 +1,40 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>mirror</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Magic Mirror</ion-title>
+        <ion-button slot="end" shape="round" color="primary" (click)="utils.toggleModal()">Add a note</ion-button>
+        <ion-icon slot="end" name="log-out" (click)="user.callLogout()"></ion-icon>
+    </ion-toolbar>
 </ion-header>
-
+<div id="modalBackDrop" (click)="utils.toggleModal()"></div>
 <ion-content padding>
-  <h1>{{userId}} {{mirrorId}}</h1>
+    <ion-list>
+        <ion-list-header>
+            <ion-label>Your Notes for {{screenName}}</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let note of notes">
+            <ion-card id="{{note.id}}" (click)="deleteNote(note.id)" size="12" *ngIf="(note.author == userId)">
+                <div class="card-delete ion-text-center">
+                    <ion-icon name="close-circle"></ion-icon>
+                </div>
+                <ion-card-header>
+                    <ion-card-subtitle hidden>
+                        {{note.author}}
+                    </ion-card-subtitle>
+                    <ion-card-title>
+                        {{note.title}}
+                    </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    {{note.content}}
+                </ion-card-content>
+            </ion-card>
+        </ion-item>
+    </ion-list>
+    <div id="customModal">
+        <ion-label>Title</ion-label>
+        <ion-input [(ngModel)]="noteTitle" type="text"></ion-input>
+        <ion-label>Note</ion-label>
+        <ion-textarea [(ngModel)]="noteText"></ion-textarea>
+        <ion-button color="primary" (click)="addNote()">Add</ion-button>
+    </div>
 </ion-content>
