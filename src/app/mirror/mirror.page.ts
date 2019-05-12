@@ -125,6 +125,7 @@ export class MirrorPage implements OnInit {
                     handler: () => {
                         // Call delete on firebase
                         this.firebaseService.deleteData(this.mirrorId + '/notes', noteId);
+                        document.getElementById(noteId).remove();
                     }
                 }
             ]

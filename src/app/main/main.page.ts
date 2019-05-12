@@ -167,12 +167,23 @@ export class MainPage implements OnInit {
                             this.mirrors.push({'name': data.mirrorName, 'id': this.mirrorCode, 'screenName': data.screenName});
                         }
                         this.storage.set('mirrors', this.mirrors);
+                         location.reload();
                     }
                 }
             ]
         });
 
         await alert.present();
+    }
+
+    /**
+     * Deletes all mirrors from phone
+     *
+     */
+    deleteAllMirrors() {
+        this.storage.set('mirrors', null);
+        document.getElementById('mirror-list').innerHTML = '';
+
     }
 
 }
